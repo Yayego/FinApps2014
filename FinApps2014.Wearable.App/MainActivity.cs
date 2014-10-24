@@ -10,6 +10,7 @@ using FinApps2014.Wearable.App.Services;
 using System;
 
 namespace FinApps2014.Wearable.App {
+
     [Activity(Label = "FinApps2014.Wearable.App", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity, GestureDetector.IOnGestureListener {
 
@@ -279,6 +280,13 @@ namespace FinApps2014.Wearable.App {
 
         }
 
+
+        public override bool DispatchTouchEvent(MotionEvent ev) {
+            return this.gestureDetector.OnTouchEvent(ev);
+            // TODO: rotate events too
+            return base.DispatchTouchEvent(ev);
+        }
+        
         public override bool OnTouchEvent(Android.Views.MotionEvent e) {
             return this.gestureDetector.OnTouchEvent(e);
         }

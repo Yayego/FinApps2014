@@ -61,7 +61,7 @@
     <Compile Include="Controls\FontFitTextView.cs" />
     <Compile Include="Controls\IntEditTextPreference.cs" />
     <Compile Include="Controls\ProgressView.cs" />
-    <Compile Include="Controls\ProgressViewCommon.cs" />
+    <Compile Include="Controls\ProgressView.Compute.cs" />
     <Compile Include="Database\StepEntry.cs" />
     <Compile Include="Database\StepEntryDatabaseADO.cs" />
     <Compile Include="Database\StepEntryManager.cs" />
