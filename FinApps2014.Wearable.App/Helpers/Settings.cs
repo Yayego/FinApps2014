@@ -22,7 +22,10 @@ namespace FinApps2014.Wearable.App.Helpers {
         #region Setting Constants
 
         public const string DailyStepGoalKey = "DailyStepGoal";
-        private static readonly int DailyStepGoalDefault = 10000;
+
+        private static readonly int DailyStepGoalDefault = 50;
+
+        //private static readonly int DailyStepGoalDefault = 10000;
 
         public const string WeightKey = "Weight";
         private static readonly int WeightDefault = 0;
@@ -59,7 +62,9 @@ namespace FinApps2014.Wearable.App.Helpers {
         private static readonly DateTime GoalTodayDayDefault = DateTime.Today.AddDays(-1);
 
         private const string NextGoalKey = "NextGoal";
-        private const Int64 NextGoalDefault = 100000;
+        private const Int64 NextGoalDefault = 50;
+
+        //private const Int64 NextGoalDefault = 100000;
 
         private const string HighScoreKey = "HighScore";
         private const Int64 HighScoreDefault = 0;

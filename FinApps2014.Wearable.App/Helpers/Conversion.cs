@@ -4,18 +4,18 @@ namespace FinApps2014.Wearable.App.Helpers {
 
     public static class Conversion {
         public static double StepCountToPercentage(int stepCount) {
-            var per = (stepCount / (decimal)10000) * 100;
+            var per = (stepCount / (decimal)50) * 100;
             return ((double)per);
         }
 
         public static double StepCountToPercentage(Int64 stepCount) {
-            var per = (stepCount / (decimal)10000) * 100;
+            var per = (stepCount / (decimal)50) * 100;
             return ((double)per);
         }
 
         public static int PercentageToStepCount(double percent) {
             if (!(percent > 0)) return 0;
-            var steps = (10000 / (decimal)percent) * 100;
+            var steps = (50 / (decimal)percent) * 100;
             return ((int)steps);
         }
 
