@@ -46,9 +46,11 @@
       <HintPath>..\Components\androidwearpreview-1.0.0.1\lib\android\AndroidWear.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.Support.v4">
@@ -56,9 +58,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FontFitTextView.cs" />
+    <Compile Include="Controls\IntEditTextPreference.cs" />
+    <Compile Include="Controls\ProgressView.cs" />
+    <Compile Include="Controls\ProgressViewCommon.cs" />
+    <Compile Include="Database\StepEntry.cs" />
+    <Compile Include="Database\StepEntryDatabaseADO.cs" />
+    <Compile Include="Database\StepEntryManager.cs" />
+    <Compile Include="Database\StepEntryRepositoryADO.cs" />
+    <Compile Include="Helpers\Conversion.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BootReceiver.cs" />
+    <Compile Include="Services\StepService.cs" />
+    <Compile Include="Services\StepServiceBinder.cs" />
+    <Compile Include="Services\StepServiceConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -75,6 +92,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="Resources\values\arrays.xml" />
+    <AndroidResource Include="Resources\values\color.xml" />
+    <AndroidResource Include="Resources\values\dimen.xml" />
+    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\drawable\ic_warning.png" />
+    <AndroidResource Include="Resources\drawable\ic_highscore.png" />
+    <AndroidResource Include="Resources\drawable\ic_notification.png" />
+    <AndroidResource Include="Resources\values-es\strings.xml" />
+    <AndroidResource Include="Resources\drawable\ic_unsupporteddevice.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="androidwearpreview">
