@@ -88,24 +88,22 @@ namespace FinApps2014.Wearable.App {
 
             //for testing
 
-            stepCount.Clickable = true;
-            stepCount.Click += (object sender, EventArgs e) => {
-                if (binder != null) {
-                    if (testSteps == 1)
-                        testSteps = (int)binder.StepService.StepsToday;
-                    testSteps += 100;
-                    if (testSteps > 10000)
-                        testSteps += 1000;
-                    binder.StepService.AddSteps(testSteps);
+            //stepCount.Clickable = true;
+            //stepCount.Click += (object sender, EventArgs e) => {
+            //    if (binder != null) {
+            //        if (testSteps == 1)
+            //            testSteps = (int)binder.StepService.StepsToday;
+            //        testSteps += 100;
+            //        if (testSteps > 10000)
+            //            testSteps += 1000;
+            //        binder.StepService.AddSteps(testSteps);
 
 
-                    HandlePropertyChanged(null, new System.ComponentModel.PropertyChangedEventArgs("StepsToday"));
-                }
-            };
+            //        HandlePropertyChanged(null, new System.ComponentModel.PropertyChangedEventArgs("StepsToday"));
+            //    }
+            //};
 
         }
-
-        int testSteps = 0;
 
         private void StartStepService() {
 

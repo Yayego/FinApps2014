@@ -40,12 +40,12 @@
         android:id="@+id/counter_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="@dimen/standard_padding"
-        android:layout_marginTop="?android:attr/actionBarSize">
+        android:padding="@dimen/standard_padding">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left">
             <TextView
                 android:text="@string/today"
                 android:id="@+id/today"
