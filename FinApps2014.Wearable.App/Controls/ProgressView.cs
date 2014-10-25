@@ -28,7 +28,6 @@ namespace FinApps2014.Wearable.App.Controls {
         }
         #endregion
 
-
     }
 }
 

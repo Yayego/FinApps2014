@@ -3,6 +3,8 @@ using System;
 namespace FinApps2014.Wearable.App.Helpers {
 
     public static class Conversion {
+
+        #region Static Methods
         public static double StepCountToPercentage(int stepCount) {
             var per = (stepCount / (decimal)50) * 100;
             return ((double)per);
@@ -42,7 +44,6 @@ namespace FinApps2014.Wearable.App.Helpers {
             var miles = StepsToMiles(stepCount);
             return miles * 1.609344f;
         }
-
 
         public static string CaloriesBurnt(float miles) {
             const int caloriesBurntPerMile = 100;
@@ -98,5 +99,7 @@ namespace FinApps2014.Wearable.App.Helpers {
             var val = Math.Round(((adjusted_weight * met) / pace) * miles);
             return val <= 0 ? "0" : val.ToString("N0");
         }
+        #endregion
+
     }
 }

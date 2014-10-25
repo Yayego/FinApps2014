@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 
 namespace FinApps2014.Wearable.App.Services {
+
     [Service(Enabled = true)]
     [IntentFilter(new String[] { "FinApps2014.Wearable.App.StepService" })]
     public class StepService : Service, ISensorEventListener, INotifyPropertyChanged {
@@ -53,8 +54,6 @@ namespace FinApps2014.Wearable.App.Services {
             return StartCommandResult.Sticky;
         }
 
-
-
         public override void OnTaskRemoved(Intent rootIntent) {
             base.OnTaskRemoved(rootIntent);
 
@@ -97,7 +96,7 @@ namespace FinApps2014.Wearable.App.Services {
             CrunchDates();
         }
 
-        void RegisterListeners(SensorType sensorType) {
+        private void RegisterListeners(SensorType sensorType) {
 
             var sensorManager = (SensorManager)GetSystemService(Context.SensorService);
             var sensor = sensorManager.GetDefaultSensor(sensorType);

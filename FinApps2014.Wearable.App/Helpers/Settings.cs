@@ -11,13 +11,13 @@ namespace FinApps2014.Wearable.App.Helpers {
     /// and setters. 
     /// </summary>
     public static class Settings {
+
         private static SettingsHelper appSettings;
         private static SettingsHelper AppSettings {
             get {
                 return appSettings ?? (appSettings = new SettingsHelper());
             }
         }
-
 
         #region Setting Constants
 

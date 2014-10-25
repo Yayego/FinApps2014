@@ -1,11 +1,5 @@
-﻿using System;
-
-#if __ANDROID__
-using Android.Graphics;
-#elif __IOS__
-using MonoTouch.UIKit;
-using Color = MonoTouch.UIKit.UIColor;
-#endif
+﻿using Android.Graphics;
+using System;
 
 namespace FinApps2014.Wearable.App.Controls {
     public partial class ProgressView {
