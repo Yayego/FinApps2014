@@ -192,10 +192,9 @@ namespace FinApps2014.Wearable.App {
         }
 
         public void OnLongPress(MotionEvent e) {
-            if (this.Binder == null) {
-                if (Utils.IsSameDay)
-                    Helpers.Settings.CurrentDaySteps = 0;
-            } else {
+            Helpers.Settings.CurrentDaySteps = 0;
+            Helpers.Settings.TotalSteps = Helpers.Settings.StepsBeforeToday;
+            if (this.Binder != null) {
                 Binder.StepService.StepsToday = 0;
             }
             this.RaisePropertyChanged("StepsToday");
