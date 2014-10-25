@@ -7,9 +7,12 @@ namespace FinApps2014.Wearable.App.Database {
     /// </summary>
     public static class StepEntryManager {
 
+        #region Static Constructors
         static StepEntryManager() {
         }
+        #endregion
 
+        #region Static Methods
         public static StepEntry GetStepEntry(DateTime time) {
             return StepEntryRepositoryADO.GetStepEntry(time);
         }
@@ -25,5 +28,7 @@ namespace FinApps2014.Wearable.App.Database {
         public static int DeleteStepEntry(int id) {
             return StepEntryRepositoryADO.DeleteStepEntry(id);
         }
+        #endregion
+
     }
 }

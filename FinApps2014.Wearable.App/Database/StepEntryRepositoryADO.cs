@@ -4,22 +4,19 @@ using System.IO;
 
 namespace FinApps2014.Wearable.App.Database {
     public class StepEntryRepositoryADO {
-        StepEntryDatabase db = null;
+
+        #region Static Members
         protected static string dbLocation;
         protected static StepEntryRepositoryADO me;
+        #endregion
 
+        #region Static Constructors
         static StepEntryRepositoryADO() {
             me = new StepEntryRepositoryADO();
         }
+        #endregion
 
-        protected StepEntryRepositoryADO() {
-            // set the db location
-            dbLocation = DatabaseFilePath;
-
-            // instantiate the database	
-            db = new StepEntryDatabase(dbLocation);
-        }
-
+        #region Static Properties
         public static string DatabaseFilePath {
             get {
                 var sqliteFilename = "StepCounter.db3";
@@ -48,7 +45,9 @@ namespace FinApps2014.Wearable.App.Database {
                 return path;
             }
         }
+        #endregion
 
+        #region Static Methods
         public static StepEntry GetStepEntry(DateTime time) {
             return me.db.GetItem(time);
         }
@@ -64,6 +63,22 @@ namespace FinApps2014.Wearable.App.Database {
         public static int DeleteStepEntry(int id) {
             return me.db.DeleteItem(id);
         }
+        #endregion
+
+        #region Members
+        private StepEntryDatabase db = null;
+        #endregion
+
+        #region Constructors
+        protected StepEntryRepositoryADO() {
+            // set the db location
+            dbLocation = DatabaseFilePath;
+
+            // instantiate the database	
+            db = new StepEntryDatabase(dbLocation);
+        }
+        #endregion
+
     }
 }
 

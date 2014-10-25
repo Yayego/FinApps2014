@@ -8,13 +8,17 @@ using System.IO;
 namespace FinApps2014.Wearable.App.Database {
 
     public class StepEntryDatabase {
-        static object locker = new object();
 
+        #region Static Members
+        private static object locker = new object();
+        #endregion
+
+        #region Members
         public SqliteConnection connection;
-
         public string path;
+        #endregion
 
-
+        #region Constructors
         public StepEntryDatabase(string dbPath) {
             var output = "";
             path = dbPath;
@@ -41,9 +45,11 @@ namespace FinApps2014.Wearable.App.Database {
             }
             Console.WriteLine(output);
         }
+        #endregion
 
+        #region Methods
         /// <summary>Convert from DataReader to Task object</summary>
-        StepEntry FromReader(SqliteDataReader r) {
+        private StepEntry FromReader(SqliteDataReader r) {
             var t = new StepEntry();
             t.ID = Convert.ToInt32(r["_id"]);
             t.Steps = Convert.ToInt64(r["Steps"]);
@@ -58,8 +64,6 @@ namespace FinApps2014.Wearable.App.Database {
             t.Date = dateOut;
             return t;
         }
-
-
 
         public IEnumerable<StepEntry> GetItems(int count) {
             var tl = new List<StepEntry>();
@@ -84,7 +88,6 @@ namespace FinApps2014.Wearable.App.Database {
             }
             return tl;
         }
-
 
         public StepEntry GetItem(DateTime date) {
             var t = new StepEntry();
@@ -158,5 +161,7 @@ namespace FinApps2014.Wearable.App.Database {
                 return r;
             }
         }
+        #endregion
+
     }
 }
