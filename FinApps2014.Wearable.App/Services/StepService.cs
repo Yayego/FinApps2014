@@ -266,12 +266,12 @@ namespace FinApps2014.Wearable.App.Services {
             var notificationString = string.Empty;
             if (Helpers.Settings.TotalSteps + newSteps > Helpers.Settings.NextGoal) {
                 notificationString = string.Format(Resources.GetString(Resource.String.awesome), Utils.FormatSteps(Helpers.Settings.NextGoal));
-                if (Settings.NextGoal < 500000) {
-                    Settings.NextGoal = 500000;
-                } else if (Helpers.Settings.NextGoal < 1000000) {
-                    Settings.NextGoal = 1000000;
+                if (Settings.NextGoal < 50) {
+                    Settings.NextGoal = 50;
+                } else if (Helpers.Settings.NextGoal < 100) {
+                    Settings.NextGoal = 100;
                 } else {
-                    Settings.NextGoal += 1000000;
+                    Settings.NextGoal += 50;
                 }
             } else {
                 notification = false;

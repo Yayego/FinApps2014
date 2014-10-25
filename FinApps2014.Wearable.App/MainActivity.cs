@@ -193,6 +193,7 @@ namespace FinApps2014.Wearable.App {
 
         public void OnLongPress(MotionEvent e) {
             Helpers.Settings.CurrentDaySteps = 0;
+            Helpers.Settings.NextGoal = 50;
             Helpers.Settings.TotalSteps = Helpers.Settings.StepsBeforeToday;
             if (this.Binder != null) {
                 Binder.StepService.StepsToday = 0;
