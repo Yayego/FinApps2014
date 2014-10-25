@@ -11,89 +11,53 @@ namespace FinApps2014.Wearable.App.Services {
     [Service(Enabled = true)]
     [IntentFilter(new String[] { "FinApps2014.Wearable.App.StepService" })]
     public class StepService : Service, ISensorEventListener, INotifyPropertyChanged {
+
+        #region Members
         private bool isRunning;
-        private Int64 stepsToday = 0;
+        private long stepsToday = 0;
+        private StepServiceBinder binder;
+        private long newSteps = 0;
+        private long lastSteps = 0;
+        #endregion
+
+
+        #region Properties
         public bool WarningState {
             get;
             set;
         }
 
-        public Int64 StepsToday {
-            get { return stepsToday; }
+        public long StepsToday {
+            get { return this.stepsToday; }
             set {
-                if (stepsToday == value)
+                if (this.stepsToday == value)
                     return;
 
-                stepsToday = value;
-                OnPropertyChanged("StepsToday");
+                this.stepsToday = value;
+                this.OnPropertyChanged("StepsToday");
                 Helpers.Settings.CurrentDaySteps = value;
             }
         }
+        #endregion
 
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId) {
-            Console.WriteLine("StartCommand Called, setting alarm");
-#if DEBUG
-            Android.Util.Log.Debug("STEPSERVICE", "Start command result called, incoming startup");
-#endif
-
-            var alarmManager = ((AlarmManager)ApplicationContext.GetSystemService(Context.AlarmService));
-            var intent2 = new Intent(this, typeof(StepService));
-            intent2.PutExtra("warning", WarningState);
-            var stepIntent = PendingIntent.GetService(ApplicationContext, 10, intent2, PendingIntentFlags.UpdateCurrent);
-            // Workaround as on Android 4.4.2 START_STICKY has currently no
-            // effect
-            // -> restart service every 60 mins
-            alarmManager.Set(AlarmType.Rtc, Java.Lang.JavaSystem
-                .CurrentTimeMillis() + 1000 * 60 * 60, stepIntent);
-
-            var warning = false;
-            if (intent != null)
-                warning = intent.GetBooleanExtra("warning", false);
-            Startup();
-
-            return StartCommandResult.Sticky;
-        }
-
-        public override void OnTaskRemoved(Intent rootIntent) {
-            base.OnTaskRemoved(rootIntent);
-
-            UnregisterListeners();
-#if DEBUG
-            Console.WriteLine("OnTaskRemoved Called, setting alarm for 500 ms");
-            Android.Util.Log.Debug("STEPSERVICE", "Task Removed, going down");
-#endif
-            var intent = new Intent(this, typeof(StepService));
-            intent.PutExtra("warning", WarningState);
-            // Restart service in 500 ms
-            ((AlarmManager)GetSystemService(Context.AlarmService)).Set(AlarmType.Rtc, Java.Lang.JavaSystem
-                .CurrentTimeMillis() + 500,
-                PendingIntent.GetService(this, 11, intent, 0));
-        }
-
+        #region Methods
         private void Startup(bool warning = false) {
             //check if kit kat can sensor compatible
-            if (!Utils.IsKitKatWithStepCounter(PackageManager)) {
+            if (!Utils.IsKitKatWithStepCounter(this.PackageManager)) {
 
                 Console.WriteLine("Not compatible with sensors, stopping service.");
-                StopSelf();
+                this.StopSelf();
                 return;
             }
 
-            CrunchDates(true);
+            this.CrunchDates(true);
 
-            if (!isRunning) {
-                RegisterListeners(warning ? SensorType.StepDetector : SensorType.StepCounter);
-                WarningState = warning;
+            if (!this.isRunning) {
+                this.RegisterListeners(warning ? SensorType.StepDetector : SensorType.StepCounter);
+                this.WarningState = warning;
             }
 
-            isRunning = true;
-        }
-
-        public override void OnDestroy() {
-            base.OnDestroy();
-            UnregisterListeners();
-            isRunning = false;
-            CrunchDates();
+            this.isRunning = true;
         }
 
         private void RegisterListeners(SensorType sensorType) {
@@ -108,8 +72,7 @@ namespace FinApps2014.Wearable.App.Services {
 
         }
 
-
-        void UnregisterListeners() {
+        private void UnregisterListeners() {
 
             if (!isRunning)
                 return;
@@ -129,91 +92,38 @@ namespace FinApps2014.Wearable.App.Services {
             }
         }
 
-        StepServiceBinder binder;
-        public override Android.OS.IBinder OnBind(Android.Content.Intent intent) {
-            binder = new StepServiceBinder(this);
-            return binder;
-        }
-
-        public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy) {
-            //do nothing here
-        }
-
-        public void AddSteps(Int64 count) {
+        public void AddSteps(long count) {
             //if service rebooted or rebound then this will null out to 0, but count will still be since last boot.
-            if (lastSteps == 0) {
-                lastSteps = count;
+            if (this.lastSteps == 0) {
+                this.lastSteps = count;
             }
 
-
-
             //calculate new steps
-            newSteps = count - lastSteps;
+            this.newSteps = count - this.lastSteps;
 
             //ensure we are never negative
             //if so, no worries as we are about to re-set the lastSteps to the
             //current count
-            if (newSteps < 0)
-                newSteps = 1;
+            if (this.newSteps < 0)
+                this.newSteps = 1;
 
 
-            lastSteps = count;
+            this.lastSteps = count;
 
             //ensure we don't need to re-boot day :)
-            CrunchDates();
-            CrunchHighScores();
+            this.CrunchDates();
+            this.CrunchHighScores();
 
             //save total steps!
-            Helpers.Settings.TotalSteps += newSteps;
+            Helpers.Settings.TotalSteps += this.newSteps;
 
-            StepsToday = Helpers.Settings.TotalSteps - Helpers.Settings.StepsBeforeToday;
+            this.StepsToday = Helpers.Settings.TotalSteps - Helpers.Settings.StepsBeforeToday;
 
             Console.WriteLine("New step detected by STEP_COUNTER sensor. Total step count: " + stepsToday);
 #if DEBUG
             Android.Util.Log.Debug("STEPSERVICE", "New steps: " + newSteps + " total: " + stepsToday);
 #endif
         }
-
-        Int64 newSteps = 0;
-        Int64 lastSteps = 0;
-        public void OnSensorChanged(SensorEvent e) {
-            switch (e.Sensor.Type) {
-
-                case SensorType.StepCounter:
-
-                    if (lastSteps < 0)
-                        lastSteps = 0;
-
-                    //grab out the current value.
-                    var count = (Int64)e.Values[0];
-                    //in some instances if things are running too long (about 4 days)
-                    //the value flips and gets crazy and this will be -1
-                    //so switch to step detector instead, but put up warning sign.
-                    if (count < 0) {
-
-                        UnregisterListeners();
-                        RegisterListeners(SensorType.StepDetector);
-                        isRunning = true;
-#if DEBUG
-                        Android.Util.Log.Debug("STEPSERVICE", "Something has gone wrong with the step counter, simulating steps, 2.");
-#endif
-                        count = lastSteps + 3;
-
-                        WarningState = true;
-                    } else {
-                        WarningState = false;
-                    }
-
-                    AddSteps(count);
-
-                    break;
-                case SensorType.StepDetector:
-                    count = lastSteps + 1;
-                    AddSteps(count);
-                    break;
-            }
-        }
-
 
         private void CrunchHighScores() {
             bool notification = Helpers.Settings.ProgressNotifications;
@@ -281,7 +191,6 @@ namespace FinApps2014.Wearable.App.Services {
             if (notification) {
                 PopUpNotification(2, Resources.GetString(Resource.String.awesome_title), notificationString);
             }
-
         }
 
         private void PopUpNotification(int id, string title, string message) {
@@ -310,8 +219,6 @@ namespace FinApps2014.Wearable.App.Services {
                 );
             mBuilder.SetContentIntent(resultPendingIntent);
 
-
-
             NotificationManager mNotificationManager =
                 (NotificationManager)GetSystemService(Context.NotificationService);
             // mId allows you to update the notification later on.
@@ -334,7 +241,7 @@ namespace FinApps2014.Wearable.App.Services {
                 Helpers.Settings.CurrentDay = DateTime.Today;
                 Helpers.Settings.CurrentDaySteps = 0;
                 Helpers.Settings.StepsBeforeToday = Helpers.Settings.TotalSteps;
-                StepsToday = 0;
+                this.StepsToday = 0;
                 try {
                     StepEntryManager.SaveStepEntry(dayEntry);
                 } catch (Exception ex) {
@@ -342,11 +249,12 @@ namespace FinApps2014.Wearable.App.Services {
                 }
 
             } else if (startup) {
-                StepsToday = Helpers.Settings.TotalSteps - Helpers.Settings.StepsBeforeToday;
+                this.StepsToday = Helpers.Settings.TotalSteps - Helpers.Settings.StepsBeforeToday;
             }
         }
+        #endregion
 
-        #region INotifyPropertyChanged implementation
+        #region Methods of INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name) {
             if (PropertyChanged == null)
@@ -355,6 +263,101 @@ namespace FinApps2014.Wearable.App.Services {
             PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
         #endregion
+
+        #region Overrides
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId) {
+            Console.WriteLine("StartCommand Called, setting alarm");
+#if DEBUG
+            Android.Util.Log.Debug("STEPSERVICE", "Start command result called, incoming startup");
+#endif
+
+            var alarmManager = ((AlarmManager)ApplicationContext.GetSystemService(Context.AlarmService));
+            var intent2 = new Intent(this, typeof(StepService));
+            intent2.PutExtra("warning", WarningState);
+            var stepIntent = PendingIntent.GetService(ApplicationContext, 10, intent2, PendingIntentFlags.UpdateCurrent);
+            // Workaround as on Android 4.4.2 START_STICKY has currently no
+            // effect
+            // -> restart service every 60 mins
+            alarmManager.Set(AlarmType.Rtc, Java.Lang.JavaSystem.CurrentTimeMillis() + 1000 * 60 * 60, stepIntent);
+
+            var warning = false;
+            if (intent != null)
+                warning = intent.GetBooleanExtra("warning", false);
+            this.Startup();
+
+            return StartCommandResult.Sticky;
+        }
+
+        public override void OnTaskRemoved(Intent rootIntent) {
+            base.OnTaskRemoved(rootIntent);
+
+            this.UnregisterListeners();
+#if DEBUG
+            Console.WriteLine("OnTaskRemoved Called, setting alarm for 500 ms");
+            Android.Util.Log.Debug("STEPSERVICE", "Task Removed, going down");
+#endif
+            var intent = new Intent(this, typeof(StepService));
+            intent.PutExtra("warning", WarningState);
+            // Restart service in 500 ms
+            ((AlarmManager)GetSystemService(Context.AlarmService)).Set(AlarmType.Rtc, Java.Lang.JavaSystem.CurrentTimeMillis() + 500, PendingIntent.GetService(this, 11, intent, 0));
+        }
+
+        public override void OnDestroy() {
+            base.OnDestroy();
+            this.UnregisterListeners();
+            this.isRunning = false;
+            this.CrunchDates();
+        }
+        public override Android.OS.IBinder OnBind(Android.Content.Intent intent) {
+            binder = new StepServiceBinder(this);
+            return binder;
+        }
+        #endregion
+
+        #region Events
+        public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy) {
+            //do nothing here
+        }
+
+        public void OnSensorChanged(SensorEvent e) {
+            switch (e.Sensor.Type) {
+
+                case SensorType.StepCounter:
+
+                    if (this.lastSteps < 0)
+                        this.lastSteps = 0;
+
+                    //grab out the current value.
+                    var count = (long)e.Values[0];
+                    //in some instances if things are running too long (about 4 days)
+                    //the value flips and gets crazy and this will be -1
+                    //so switch to step detector instead, but put up warning sign.
+                    if (count < 0) {
+
+                        this.UnregisterListeners();
+                        this.RegisterListeners(SensorType.StepDetector);
+                        this.isRunning = true;
+#if DEBUG
+                        Android.Util.Log.Debug("STEPSERVICE", "Something has gone wrong with the step counter, simulating steps, 2.");
+#endif
+                        count = lastSteps + 3;
+
+                        this.WarningState = true;
+                    } else {
+                        this.WarningState = false;
+                    }
+
+                    this.AddSteps(count);
+
+                    break;
+                case SensorType.StepDetector:
+                    count = this.lastSteps + 1;
+                    this.AddSteps(count);
+                    break;
+            }
+        }
+        #endregion
+
     }
 }
 

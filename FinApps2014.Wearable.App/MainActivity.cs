@@ -98,7 +98,7 @@ namespace FinApps2014.Wearable.App {
             if (this.fullAnimation || !Utils.IsSameDay) {
                 interpolator = new BounceInterpolator();
                 time = 3000;
-                fullAnimation = false;
+                this.fullAnimation = false;
             } else {
                 interpolator = new LinearInterpolator();
             }
@@ -192,6 +192,7 @@ namespace FinApps2014.Wearable.App {
         }
 
         public void OnLongPress(MotionEvent e) {
+            this.fullAnimation = true;
             Helpers.Settings.CurrentDaySteps = 0;
             Helpers.Settings.NextGoal = 50;
             Helpers.Settings.TotalSteps = Helpers.Settings.StepsBeforeToday;
@@ -224,8 +225,8 @@ namespace FinApps2014.Wearable.App {
             // Set our view from the "main" layout resource
             this.SetContentView(Resource.Layout.Main);
 
-            topLayer = FindViewById<FrameLayout>(Resource.Id.top_layer);
-            handler = new Handler();
+            this.topLayer = FindViewById<FrameLayout>(Resource.Id.top_layer);
+            this.handler = new Handler();
             if (!Utils.IsKitKatWithStepCounter(PackageManager)) {
                 //no step detector detected :(
                 var counter_layout = FindViewById<FrameLayout>(Resource.Id.counter_layout);
@@ -235,28 +236,28 @@ namespace FinApps2014.Wearable.App {
                 no_sensor.Visibility = Android.Views.ViewStates.Visible;
                 counter_layout.Visibility = Android.Views.ViewStates.Gone;
                 this.Title = Resources.GetString(Resource.String.app_name);
-                handler.PostDelayed(() => AnimateTopLayer(0), 500);
+                this.handler.PostDelayed(() => AnimateTopLayer(0), 500);
                 return;
             }
 
-            stepCount = FindViewById<TextView>(Resource.Id.stepcount);
-            calorieCount = FindViewById<TextView>(Resource.Id.calories);
-            distance = FindViewById<TextView>(Resource.Id.distance);
-            percentage = FindViewById<TextView>(Resource.Id.percentage);
-            progressView = FindViewById<ProgressView>(Resource.Id.progressView);
-            highScore = FindViewById<ImageView>(Resource.Id.high_score);
-            warning = FindViewById<ImageView>(Resource.Id.warning);
+            this.stepCount = FindViewById<TextView>(Resource.Id.stepcount);
+            this.calorieCount = FindViewById<TextView>(Resource.Id.calories);
+            this.distance = FindViewById<TextView>(Resource.Id.distance);
+            this.percentage = FindViewById<TextView>(Resource.Id.percentage);
+            this.progressView = FindViewById<ProgressView>(Resource.Id.progressView);
+            this.highScore = FindViewById<ImageView>(Resource.Id.high_score);
+            this.warning = FindViewById<ImageView>(Resource.Id.warning);
 
-            calorieString = Resources.GetString(Resource.String.calories);
-            distanceString = Resources.GetString(Helpers.Settings.UseKilometeres ? Resource.String.kilometeres : Resource.String.miles);
-            percentString = Resources.GetString(Resource.String.percent_complete);
-            completedString = Resources.GetString(Resource.String.completed);
+            this.calorieString = Resources.GetString(Resource.String.calories);
+            this.distanceString = Resources.GetString(Helpers.Settings.UseKilometeres ? Resource.String.kilometeres : Resource.String.miles);
+            this.percentString = Resources.GetString(Resource.String.percent_complete);
+            this.completedString = Resources.GetString(Resource.String.completed);
 
             this.Title = Utils.DateString;
 
-            handler.PostDelayed(() => UpdateUI(), 500);
+            this.handler.PostDelayed(() => UpdateUI(), 500);
 
-            StartStepService();
+            this.StartStepService();
 
             //            setOnLongClickListener(new View.OnLongClickListener() {
             //  public boolean onLongClick(View view) {
@@ -341,9 +342,9 @@ namespace FinApps2014.Wearable.App {
             base.OnResume();
             if (!firstRun) {
 
-                if (handler == null)
-                    handler = new Handler();
-                handler.PostDelayed(() => UpdateUI(true), 500);
+                if (this.handler == null)
+                    this.handler = new Handler();
+                this.handler.PostDelayed(() => UpdateUI(true), 500);
             }
 
             this.firstRun = false;
