@@ -192,7 +192,12 @@ namespace FinApps2014.Wearable.App {
         }
 
         public void OnLongPress(MotionEvent e) {
-            Helpers.Settings.CurrentDaySteps = 0;
+            if (this.Binder == null) {
+                if (Utils.IsSameDay)
+                    Helpers.Settings.CurrentDaySteps = 0;
+            } else {
+                Binder.StepService.StepsToday = 0;
+            }
             this.RaisePropertyChanged("StepsToday");
         }
 
@@ -283,17 +288,15 @@ namespace FinApps2014.Wearable.App {
 
         public override bool DispatchTouchEvent(MotionEvent ev) {
             return this.gestureDetector.OnTouchEvent(ev);
-            // TODO: rotate events too
-            return base.DispatchTouchEvent(ev);
         }
-        
+
         public override bool OnTouchEvent(Android.Views.MotionEvent e) {
             return this.gestureDetector.OnTouchEvent(e);
         }
 
         protected override void OnStop() {
             base.OnStop();
-            if (IsBound) {
+            if (this.IsBound) {
                 this.UnbindService(serviceConnection);
                 this.IsBound = false;
             }
@@ -322,8 +325,8 @@ namespace FinApps2014.Wearable.App {
                 return;
 
             var serviceIntent = new Intent(this, typeof(StepService));
-            serviceConnection = new StepServiceConnection(this);
-            BindService(serviceIntent, serviceConnection, Bind.AutoCreate);
+            this.serviceConnection = new StepServiceConnection(this);
+            this.BindService(serviceIntent, this.serviceConnection, Bind.AutoCreate);
         }
 
         protected override void OnPause() {
