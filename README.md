@@ -1,4 +1,4 @@
-![Logo](https://github.com/Yayego/FinApps2014/blob/HeronPC/Screenshots/scsht1.png) FinApps2014 - Wear it
+![Logo](https://github.com/Yayego/FinApps2014/blob/HeronPC/FinApps2014.Wearable.App/Resources/drawable/Icon.png) FinApps2014 - Wear it
 ===========
 
 FinApps 2014 Wearable Edition
