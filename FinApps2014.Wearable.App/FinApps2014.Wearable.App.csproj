@@ -101,6 +101,7 @@
     <AndroidResource Include="Resources\drawable\ic_notification.png" />
     <AndroidResource Include="Resources\values-es\strings.xml" />
     <AndroidResource Include="Resources\drawable\ic_unsupporteddevice.png" />
+    <AndroidResource Include="Resources\drawable\lacaixa_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="androidwearpreview">

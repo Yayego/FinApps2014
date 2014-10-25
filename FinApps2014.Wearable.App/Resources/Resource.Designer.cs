@@ -129,7 +129,10 @@ namespace FinApps2014.Wearable.App
 			public const int Icon = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int monoandroidsplash = 2130837509;
+			public const int lacaixa_icon = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int monoandroidsplash = 2130837510;
 			
 			static Drawable()
 			{
@@ -144,17 +147,20 @@ namespace FinApps2014.Wearable.App
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f09000b
-			public const int calories = 2131296267;
+			// aapt resource value: 0x7f09000c
+			public const int calories = 2131296268;
 			
 			// aapt resource value: 0x7f090005
 			public const int counter_layout = 2131296261;
 			
-			// aapt resource value: 0x7f09000d
-			public const int distance = 2131296269;
+			// aapt resource value: 0x7f09000e
+			public const int distance = 2131296270;
 			
-			// aapt resource value: 0x7f090009
-			public const int high_score = 2131296265;
+			// aapt resource value: 0x7f09000a
+			public const int high_score = 2131296266;
+			
+			// aapt resource value: 0x7f090006
+			public const int lacaixa_icon = 2131296262;
 			
 			// aapt resource value: 0x7f090002
 			public const int no_sensor_box = 2131296258;
@@ -165,26 +171,26 @@ namespace FinApps2014.Wearable.App
 			// aapt resource value: 0x7f090004
 			public const int no_step_sensor = 2131296260;
 			
-			// aapt resource value: 0x7f09000a
-			public const int percentage = 2131296266;
+			// aapt resource value: 0x7f09000b
+			public const int percentage = 2131296267;
 			
 			// aapt resource value: 0x7f090000
 			public const int progressView = 2131296256;
 			
-			// aapt resource value: 0x7f090007
-			public const int stepcount = 2131296263;
-			
 			// aapt resource value: 0x7f090008
-			public const int steps = 2131296264;
+			public const int stepcount = 2131296264;
 			
-			// aapt resource value: 0x7f090006
-			public const int today = 2131296262;
+			// aapt resource value: 0x7f090009
+			public const int steps = 2131296265;
+			
+			// aapt resource value: 0x7f090007
+			public const int today = 2131296263;
 			
 			// aapt resource value: 0x7f090001
 			public const int top_layer = 2131296257;
 			
-			// aapt resource value: 0x7f09000c
-			public const int warning = 2131296268;
+			// aapt resource value: 0x7f09000d
+			public const int warning = 2131296269;
 			
 			static Id()
 			{
